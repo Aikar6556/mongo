@@ -51,6 +51,8 @@ public class Ciudad {
         this.codCom = codCom;
     }
 
+    public Ciudad() {
+    }
 
     public String toStringXML() {
         return "<Ciudad>\n" +
@@ -86,5 +88,14 @@ public class Ciudad {
 
     }
 
+    @Override
+    public String toString() {
+        return "Ciudad{" +
 
+                ", nombre='" + nombre + '\'' +
+                ", poblacion=" + poblacion +
+                ", numComunidad=" + numComunidad +
+                ", codCom='" + codCom + '\'' +
+                '}';
+    }
 }

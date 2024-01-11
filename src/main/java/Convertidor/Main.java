@@ -1,8 +1,13 @@
 package Convertidor;
 
 import com.google.gson.Gson;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -25,10 +30,57 @@ public class Main {
         return resultadoTotal.replaceAll(" ","");
 
     }
+    
+    public static ArrayList<Ciudad> parseoYAML(String contenidoYAML) {
+
+        ArrayList<Ciudad> nuevasCiudades = new ArrayList<>();
+
+
+        System.out.println(contenidoYAML);
+
+        contenidoYAML = contenidoYAML.replaceAll("-", "");
+        contenidoYAML = contenidoYAML.replaceAll(":", " ");
+        contenidoYAML = contenidoYAML.replaceAll(" +", " ");
+        contenidoYAML = contenidoYAML.replaceAll("\t", "");
+        contenidoYAML = contenidoYAML.replaceAll("\n", " ");
+
+        System.out.println(contenidoYAML);
+
+        String[] arrayYAML = contenidoYAML.split(" ");
+
+
+        for (int i = 0; i < arrayYAML.length; i++) {
+
+            if (arrayYAML[i].equalsIgnoreCase("nombre")) {
+
+                nuevasCiudades.add(new Ciudad());
+
+                nuevasCiudades.getLast().setNombre(arrayYAML[i + 1]);
+
+
+            } else if ((arrayYAML[i].equalsIgnoreCase("poblacion"))) {
+
+                nuevasCiudades.getLast().setPoblacion(Integer.parseInt(arrayYAML[i + 1]));
+
+            } else if ((arrayYAML[i].equalsIgnoreCase("numComunidad"))) {
+
+                nuevasCiudades.getLast().setNumComunidad(Integer.parseInt(arrayYAML[i + 1]));
+
+            } else if ((arrayYAML[i].equalsIgnoreCase("codCom"))) {
+
+                nuevasCiudades.getLast().setCodCom(arrayYAML[i + 1]);
+
+            }
+
+
+        }
+        return nuevasCiudades;
+
+    }
 
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
         Manejador manejador = new Manejador();
 
         ArrayList<Ciudad> ciudades = new ArrayList<>();
@@ -104,34 +156,90 @@ public class Main {
 
                 String contenidoYAML = leer(ubi);
 
-                System.out.println(contenidoYAML);
-
-                contenidoYAML = contenidoYAML.replaceAll("-","");
-                contenidoYAML = contenidoYAML.replaceAll(":"," ");
-                contenidoYAML = contenidoYAML.replaceAll(" +"," ");
-                contenidoYAML = contenidoYAML.replaceAll("\t","");
-                contenidoYAML = contenidoYAML.replaceAll("\n",  " ");
-
-
-
-                System.out.println(contenidoYAML);
-
-
-
+                ArrayList<Ciudad> nuevaCiudad =  parseoYAML(contenidoYAML);
 
                 System.out.println("¿Que deseas realizar?");
                 System.out.println("1 - para convertir a XML");
                 System.out.println("2- para convertir a JSON");
+
+
+                electionJson = scanner.nextLine();
+
+                boolean flag2 = true;
+
+                while (flag2)
+
+                    if (electionJson.equalsIgnoreCase("1")){
+
+                        manejador.convertirXML(nuevaCiudad.toArray(Ciudad[]::new));
+                        System.out.println("Archivo XML creado");
+                        flag2 = false;
+
+                    } else if (electionJson.equalsIgnoreCase("2")) {
+
+                        manejador.convertirJSON(nuevaCiudad.toArray(Ciudad[]::new));
+                        System.out.println("Archivo JSON creado");
+                        flag2 = false;
+
+                    }else {
+                        System.out.println("Introduce una opcíon válido");
+                        flag2 = true;
+                        electionJson = scanner.nextLine();
+
+                    }
+
                 break;
 
             case "xml":
+
+
+                SAXParserFactory factory = SAXParserFactory.newInstance();
+                SAXParser saxParser = factory.newSAXParser();
+                CiudadHandler handler = new CiudadHandler();
+
+
+
+                saxParser.parse(path, handler);
+                Ciudad[] resutadoFinal = handler.ciudades.getXmlCiudades().toArray(Ciudad[]::new);
 
                 System.out.println("¿Que deseas realizar?");
                 System.out.println("1 - para convertir a JSON");
                 System.out.println("2- para convertir a YAML");
 
+                String electionXML = scanner.nextLine();
+
+                boolean flag3 = true;
+
+                while (flag3)
+
+
+
+
+                    if (electionXML.equalsIgnoreCase("1")){
+
+                        manejador.convertirJSON(resutadoFinal);
+                        System.out.println("Archivo JSON creado");
+                        flag3 = false;
+
+                    } else if (electionXML.equalsIgnoreCase("2")) {
+
+                        manejador.convertirYAML(resutadoFinal);
+                        System.out.println("Archivo YAML creado");
+                        flag3 = false;
+
+                    }else {
+                    System.out.println("Introduce una opcíon válida");
+                    flag3 = true;
+                    electionXML = scanner.nextLine();
+                }
+
+
+
                 break;
 
+        default:
+            System.out.println("Ruta incorrecta!");
+            break;
 
 
         }
