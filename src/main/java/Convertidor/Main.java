@@ -9,6 +9,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -17,20 +18,20 @@ public class Main {
 
         BufferedReader br = new BufferedReader(new FileReader(ruta));
 
-        String resultadoTotal ="";
+        String resultadoTotal = "";
         String linea;
-        while ((linea=br.readLine())!=null){
+        while ((linea = br.readLine()) != null) {
 
-            resultadoTotal+=linea+"\n";
+            resultadoTotal += linea + "\n";
 
 
         }
 
 
-        return resultadoTotal.replaceAll(" ","");
+        return resultadoTotal.replaceAll(" ", "");
 
     }
-    
+
     public static ArrayList<Ciudad> parseoYAML(String contenidoYAML) {
 
         ArrayList<Ciudad> nuevasCiudades = new ArrayList<>();
@@ -79,20 +80,17 @@ public class Main {
     }
 
 
-
     public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
         Manejador manejador = new Manejador();
 
         ArrayList<Ciudad> ciudades = new ArrayList<>();
 
-        ciudades.add(new Ciudad("Cuenca",200,7,"CUE"));
-        ciudades.add(new Ciudad("Ceuta",800,8,"CEU"));
-
+        ciudades.add(new Ciudad("Cuenca", 200, 7, "CUE"));
+        ciudades.add(new Ciudad("Ceuta", 800, 8, "CEU"));
 
 
         Scanner scanner = new Scanner(System.in);
         String path = "";
-
 
 
         System.out.println("Introduce el path");
@@ -100,23 +98,20 @@ public class Main {
         File ubi = new File(path);
 
 
-
         String extension = ubi.getName().split("\\.")[1];
         System.out.println(extension);
 
 
-
-
-        switch (extension){
+        switch (extension) {
 
             case "json":
 
                 String contenido = leer(ubi);
 
                 Gson gson = new Gson();
-                Ciudad[] ciudads = gson.fromJson(contenido,Ciudad[].class);
+                Ciudad[] ciudads = gson.fromJson(contenido, Ciudad[].class);
 
-                String  electionJson;
+                String electionJson;
 
                 System.out.println("¿Que deseas realizar?");
                 System.out.println("1-para convertir a XML");
@@ -128,26 +123,25 @@ public class Main {
 
                 while (flag)
 
-                if (electionJson.equalsIgnoreCase("1")){
+                    if (electionJson.equalsIgnoreCase("1")) {
 
-                    manejador.convertirXML(ciudads);
-                    System.out.println("Archivo XML creado");
-                    flag = false;
+                        manejador.convertirXML(ciudads);
+                        System.out.println("Archivo XML creado");
+                        flag = false;
 
-                } else if (electionJson.equalsIgnoreCase("2")) {
+                    } else if (electionJson.equalsIgnoreCase("2")) {
 
-                    manejador.convertirYAML(ciudads);
-                    System.out.println("Archivo YAML creado");
-                    flag = false;
+                        manejador.convertirYAML(ciudads);
+                        System.out.println("Archivo YAML creado");
+                        flag = false;
 
-                }else {
-                    System.out.println("Introduce una opcíon válido");
-                    flag = true;
-                    electionJson = scanner.nextLine();
+                    } else {
+                        System.out.println("Introduce una opcíon válido");
+                        flag = true;
+                        electionJson = scanner.nextLine();
 
 
-
-                }
+                    }
 
 
                 break;
@@ -156,7 +150,7 @@ public class Main {
 
                 String contenidoYAML = leer(ubi);
 
-                ArrayList<Ciudad> nuevaCiudad =  parseoYAML(contenidoYAML);
+                ArrayList<Ciudad> nuevaCiudad = parseoYAML(contenidoYAML);
 
                 System.out.println("¿Que deseas realizar?");
                 System.out.println("1 - para convertir a XML");
@@ -169,7 +163,7 @@ public class Main {
 
                 while (flag2)
 
-                    if (electionJson.equalsIgnoreCase("1")){
+                    if (electionJson.equalsIgnoreCase("1")) {
 
                         manejador.convertirXML(nuevaCiudad.toArray(Ciudad[]::new));
                         System.out.println("Archivo XML creado");
@@ -181,7 +175,7 @@ public class Main {
                         System.out.println("Archivo JSON creado");
                         flag2 = false;
 
-                    }else {
+                    } else {
                         System.out.println("Introduce una opcíon válido");
                         flag2 = true;
                         electionJson = scanner.nextLine();
@@ -198,24 +192,25 @@ public class Main {
                 CiudadHandler handler = new CiudadHandler();
 
 
-
                 saxParser.parse(path, handler);
                 Ciudad[] resutadoFinal = handler.ciudades.getXmlCiudades().toArray(Ciudad[]::new);
 
                 System.out.println("¿Que deseas realizar?");
                 System.out.println("1 - para convertir a JSON");
-                System.out.println("2- para convertir a YAML");
+                System.out.println("2 - para convertir a YAML");
+
+                System.out.println(Arrays.toString(resutadoFinal));
 
                 String electionXML = scanner.nextLine();
+
 
                 boolean flag3 = true;
 
                 while (flag3)
 
 
+                    if (electionXML.equalsIgnoreCase("1")) {
 
-
-                    if (electionXML.equalsIgnoreCase("1")){
 
                         manejador.convertirJSON(resutadoFinal);
                         System.out.println("Archivo JSON creado");
@@ -227,32 +222,24 @@ public class Main {
                         System.out.println("Archivo YAML creado");
                         flag3 = false;
 
-                    }else {
-                    System.out.println("Introduce una opcíon válida");
-                    flag3 = true;
-                    electionXML = scanner.nextLine();
-                }
-
+                    } else {
+                        System.out.println("Introduce una opcíon válida");
+                        flag3 = true;
+                        electionXML = scanner.nextLine();
+                    }
 
 
                 break;
 
-        default:
-            System.out.println("Ruta incorrecta!");
-            break;
+            default:
+                System.out.println("Ruta incorrecta!");
+                break;
 
 
         }
 
 
-
-
     }
-
-
-
-
-
 
 
 }

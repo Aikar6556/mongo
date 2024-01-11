@@ -49,6 +49,8 @@ public class Manejador {
 
 
         for (int i=0;i<ciudads.length;i++){
+
+            ciudads[i].getCodCom().replaceAll("'","");
             fw.write(ciudads[i].toStringYAML());
 
         }
