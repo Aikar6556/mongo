@@ -1,0 +1,11 @@
+<Ciudades><Ciudad>
+<nombre>Cuenca</nombre>
+<poblacion>200</poblacion>
+<numComunidad>7</numComunidad>
+<codCom>'CUE</codCom>
+</Ciudad><Ciudad>
+<nombre>Ceuta</nombre>
+<poblacion>80000</poblacion>
+<numComunidad>8</numComunidad>
+<codCom>'CEU</codCom>
+</Ciudad></Ciudades>
