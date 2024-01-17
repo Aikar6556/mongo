@@ -9,7 +9,7 @@ public class Manejador {
 
     public void convertirXML(Ciudad[] ciudads) throws IOException {
 
-        FileWriter fw= new FileWriter("./src/main/java/Convertidor/archives/residuo.xml");
+        FileWriter fw= new FileWriter("./src/main/java/Convertidor/archives/archivo.xml");
 
         fw.write("<Ciudades>");
 
@@ -23,7 +23,7 @@ public class Manejador {
 
     public void convertirJSON(Ciudad[] ciudads) throws IOException {
 
-        FileWriter fw= new FileWriter("./src/main/java/Convertidor/archives/residuo.json");
+        FileWriter fw= new FileWriter("./src/main/java/Convertidor/archives/archivo.json");
 
         fw.write("[\n");
 
@@ -45,7 +45,7 @@ public class Manejador {
     public void convertirYAML(Ciudad[] ciudads) throws IOException {
 
 
-        FileWriter fw= new FileWriter("./src/main/java/Convertidor/archives/residuo.yaml");
+        FileWriter fw= new FileWriter("./src/main/java/Convertidor/archives/archivo.yaml");
 
 
         for (int i=0;i<ciudads.length;i++){

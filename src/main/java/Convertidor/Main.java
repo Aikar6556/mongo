@@ -99,7 +99,6 @@ public class Main {
 
 
         String extension = ubi.getName().split("\\.")[1];
-        System.out.println(extension);
 
 
         switch (extension) {
